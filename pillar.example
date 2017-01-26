@@ -14,7 +14,7 @@ netuitive_agent:
       path: cassandra
       jolokia_path: jolokia
       mbeans: org.apache.cassandra.metrics
-      metrics_blacklist: .*Histogram.*|.*Percentile$|.*\.Min$|.*\.Max$|.*\.Mean$|.*\.Count$|.*\.StdDev$|.*\.MeanRate$|.*\.FiveMinuteRate$|.*\.FifteenMinuteRate$|.*DroppedMessage.*|.*LastGcInfo.*|Keyspace._Keyspaces.system.*
+      metrics_blacklist: .*Histogram.*|.*Percentile$|.*\.Min$|.*\.Max$|.*\.Mean$|.*\.Count$|.*\.StdDev$|.*\.MeanRate$|.*\.FiveMinuteRate$|.*\.FifteenMinuteRate$|.*DroppedMessage.*|.*LastGcInfo.*|Keyspace._Keyspaces.system.*|Keyspace._Keyspaces.*_Tables.*
       # Does this need double quotes?
 
     ElasticSearchCollector:
@@ -29,6 +29,10 @@ netuitive_agent:
       req_port: 41414
       req_path: /metrics
 
+    HeartbeatCollector:
+      enabled: True
+      path: netuitive
+
     HttpCodeCollector:
       enabled: False
       req_url: http://example.com/
@@ -41,7 +45,11 @@ netuitive_agent:
       enabled: False
       host: localhost
       port: 8778
-      path: jolokia
+      path: jmx
+      jolokia_path: jolokia
+      mbeans: java.*
+      regex: true
+
 
     KafkaCollector:
       enabled: False
@@ -55,7 +63,7 @@ netuitive_agent:
     MongoDBCollector:
       enabled: False
       host: 127.0.0.1:27017
-      metrics_blacklist: ".*databases.*|.*metrics.repl.executor.shuttingDown.*|.*storageEngine.*|.*writeBacksQueued.*|.*mem.supported.*|.*tcmallocformattedString.*"
+      metrics_blacklist: ".*databases.*|.*metrics.repl.executor.shuttingDown.*|.*storageEngine.*|.*writeBacksQueued.*|.*mem.supported.*|.*tcmallocformattedString.*|^percent.*"
       simple: True
       #Followup: Restore double quotes?
 
@@ -87,7 +95,7 @@ netuitive_agent:
       password: guest
       replace_dot: '_'
       cluster: True
-      metrics_blacklist: ".*-test__[abc]-.*"
+      metrics_blacklist: "(.*-test__[abc]-.*)|(rabbitmq\.queues\..*)"
       #Followup: Restore double quotes?
 
     RedisCollector:
@@ -107,20 +115,20 @@ netuitive_agent:
 
   nestedcollectors:
     ProcessResourcesCollector:
-      "# Basic Settings for Process Resources Collector": 
+      "# Basic Settings for Process Resources Collector":
        # Please preserve the '#' symbol
         enabled: False
         selfmon: True
-      "[process]": 
+      "[process]":
         monitor: yes
-      "[[example_process_name]]": 
+      "[[example_process_name]]":
         name: ".*sample_regex.*"
-      "[[diamond]]": 
+      "[[diamond]]":
         selfmon: True
 
     SNMPInterfaceCollector:
       "# SNMP Interface Collector":
-        "# Basic Settings": 
+        "# Basic Settings":
          # Please preserve the '#' symbol
           enabled: False
           path: interface
@@ -139,11 +147,11 @@ netuitive_agent:
 
     SNMPCollector:
       "# SNMP Collector":
-        "# Basic Settings": 
+        "# Basic Settings":
         # Please preserve the '#' symbols
           enabled: False
           interval: 60
-      "[devices]": 
+      "[devices]":
         "[[my-identification-for-this-host]]":
           host: localhost
           port: 161

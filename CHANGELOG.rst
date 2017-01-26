@@ -1,6 +1,10 @@
 netuitive-agent formula
 ================
 
+0.1.3 (2017-01-26)
+
+- Sync collector conf files with main Netuitive Agent
+
 0.1.3 (2016-11-07)
 
 - Fixed nested collector script to avoid nesting errors
