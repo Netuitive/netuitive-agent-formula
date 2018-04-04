@@ -31,7 +31,7 @@ netuitive_agent:
 
     HeartbeatCollector:
       enabled: True
-      path: netuitive
+      ttl: 150
 
     HttpCodeCollector:
       enabled: False
