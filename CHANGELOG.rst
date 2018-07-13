@@ -1,6 +1,10 @@
 netuitive-agent formula
 ================
 
+0.1.4 (2018-07-13)
+
+- Fix for Heartbeat Collector config
+
 0.1.3 (2017-01-26)
 
 - Sync collector conf files with main Netuitive Agent
